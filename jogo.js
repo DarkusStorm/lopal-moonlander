@@ -84,7 +84,7 @@ function teclaPressionada(evento) {
 
 document.addEventListener("keyup", teclaSolta);
 function teclaSolta(evento) {
-    if (evento.keyCxode == 38) {
+    if (evento.keyCode == 38) {
         moduloLunar.motorLigado = false;
     }
 }
