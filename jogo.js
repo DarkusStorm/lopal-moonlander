@@ -34,8 +34,7 @@ function desenharModuloLunar() {
     contexto.beginPath();
     contexto.translate(moduloLunar.posicao.x, moduloLunar.posicao.y);
     contexto.rotate(moduloLunar.angulo);
-    contexto.rect(moduloLunar.largura * -0.5, moduloLunar.altura * -0.5,
-        moduloLunar.largura, moduloLunar.altura);
+    contexto.rect(moduloLunar.largura * -0.5, moduloLunar.altura * -0.5, moduloLunar.largura, moduloLunar.altura);
     contexto.fillStyle = moduloLunar.cor;
     contexto.fill();
     contexto.closePath();
@@ -60,7 +59,7 @@ function desenharChama() {
     contexto.fill();
 }
 
-function mostrarVelocidade(){
+function mostrarVelocidade() {
     contexto.font = "bold 18px Arial";
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
@@ -69,7 +68,7 @@ function mostrarVelocidade(){
     contexto.fillText(velocidade, 100, 60);
 }
 
-function mostrarCombustível(){
+function mostrarCombustível() {
     contexto.font = "bold18px Arial"
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
@@ -107,14 +106,20 @@ function teclaSolta(evento) {
         moduloLunar.motorLigado = false;
     }
 }
-
 let gravidade = 0.03;
 function atracaoGravitacional() {
     moduloLunar.posicao.x += moduloLunar.velocidade.x;
     moduloLunar.posicao.y += moduloLunar.velocidade.y;
     if (moduloLunar.motorLigado) {
-        moduloLunar.velocidade.y -= 0.06;
+        if (moduloLunar.combustível > 0) {
+            moduloLunar.velocidade.y -= 0.06
+            moduloLunar.combustível -= 1;
+        } else {
+            moduloLunar.motorLigado = false;
+            moduloLunar.combustível = 0;
+        }
     }
     moduloLunar.velocidade.y += gravidade;
 }
+
 desenhar();
