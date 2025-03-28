@@ -1,3 +1,8 @@
+// Moonlander;
+// Tiago Alves da Silva (https://github.com/DarkusStorm);
+// 28/03/25;
+// Versão 0.1.0.
+
 /** @type {HTMLCanvasElement} */
 
 let canvas = document.querySelector("#jogo");
@@ -56,7 +61,7 @@ function desenharChama(){
     contexto.beginPath();
     contexto.moveTo(moduloLunar.largura * -0.5, moduloLunar.altura * 0.5);
     contexto.lineTo(moduloLunar.largura * 0.5, moduloLunar.altura * 0.5);
-    //Determina o tamanho da chama
+    // Determina o tamanho da chama.
     contexto.lineTo(0, moduloLunar.altura * 0.5 + Math.random() * 10 );
     contexto.lineTo(moduloLunar.largura * -0.5, moduloLunar.altura * 0.5);
     contexto.closePath();
@@ -70,11 +75,11 @@ function desenharChama(){
 let x = 100;
 
 function desenhar(){
-    //limpar a tela
+    // Limpa o que há na tela.
     contexto.clearRect(0, 0, canvas.width, canvas.height);
 
-    contexto.save() //salvando contexto atual
-    //vai (muda o contexto) para o centro da tela 
+    contexto.save() // Salva o contexto atual, visto que será alterado deopis.
+    // Move o contexto para o centro da tela.
     contexto.translate(canvas.width / 2, canvas.height / 2 );
     contexto.beginPath();
     //contexto.arc(x, 100, 25, 0, 2 * Math.PI);
@@ -82,7 +87,7 @@ function desenhar(){
     contexto.rect(x, 100, 25, 10);
     contexto.fillStyle = "black";
     contexto.fill();
-    contexto.restore(); //restaura o contexto anterior
+    contexto.restore(); // Restaura o contexto salvo.
 
     x = x + 1;
     atracaoGravitacional();
@@ -91,14 +96,14 @@ function desenhar(){
     
 }
 
-//Pressionando a seta para cima para ligar o motor
+// O programa compreende como "motorLigado" quando a tecla para cima está pressionada.
 document.addEventListener("keydown", teclaPressionada);
 function teclaPressionada(evento){
    if(evento.keyCode == 38){
         moduloLunar.motorLigado = true;
     }
 }
-//Soltando a seta para cima para desligar o motor
+// O programa compreende como "motorLigado = false" quando a tecla de seta para cima não está pressionada.
 document.addEventListener("keyup", teclaSolta);
 function teclaSolta(evento){
     if(evento.keyCode == 38){
