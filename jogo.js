@@ -69,6 +69,15 @@ function mostrarVelocidade(){
     contexto.fillText(velocidade, 100, 60);
 }
 
+function mostrarCombustível(){
+    contexto.font = "bold18px Arial"
+    contexto.textAlign = "center";
+    contexto.textBaseLine = "middle";
+    contexto.fillStyle = "lightgray";
+    let combustível = `Combustível: ${(moduloLunar.combustível).toFixed(1)}`;
+    contexto.fillText(combustível, 100, 80);
+}
+
 function desenhar() {
     // Limpa o que há na tela.
     contexto.clearRect(0, 0, canvas.width, canvas.height);
@@ -76,6 +85,7 @@ function desenhar() {
     // Devem estar nessa ordem.
     atracaoGravitacional();
     mostrarVelocidade();
+    mostrarCombustível();
     desenharModuloLunar();
     // "RequestAnimationFrame" repete a execução da função "desenhar" a cada quadro.
     requestAnimationFrame(desenhar);
