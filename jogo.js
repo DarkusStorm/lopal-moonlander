@@ -68,7 +68,7 @@ function mostrarVelocidade() {
 }
 
 function mostrarCombustível() {
-    contexto.font = "bold18px Arial"
+    contexto.font = "bold 18px Arial"
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
     contexto.fillStyle = "lightgray";
@@ -86,6 +86,10 @@ function desenhar() {
     mostrarCombustível();
     desenharModuloLunar();
     // "RequestAnimationFrame" repete a execução da função "desenhar" a cada quadro.
+    if(moduloLunar.posicao.y >= (canvas.height - 0.5 * moduloLunar.altura)){
+        moduloLunar.posicao.y = 600;
+        return alert("O jogo acabou!");
+    }
     requestAnimationFrame(desenhar);
 }
 
