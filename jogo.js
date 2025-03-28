@@ -86,9 +86,13 @@ function desenhar() {
     mostrarCombustível();
     desenharModuloLunar();
     // "RequestAnimationFrame" repete a execução da função "desenhar" a cada quadro.
-    if(moduloLunar.posicao.y >= (canvas.height - 0.5 * moduloLunar.altura)){
-        moduloLunar.posicao.y = 600;
-        return alert("O jogo acabou!");
+    if (moduloLunar.posicao.y >= (canvas.height - 0.5 * moduloLunar.altura)) {
+
+        if (moduloLunar.velocidade.y >= 1.5) {
+            return alert("Houve um acidente! Você bateu com a lua.");
+        } else {
+            return alert("Você conseguiu pousar! O jogo acabou.");
+        }
     }
     requestAnimationFrame(desenhar);
 }
