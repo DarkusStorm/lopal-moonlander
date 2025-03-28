@@ -95,7 +95,7 @@ function desenhar() {
 // O programa compreende como "motorLigado" quando a tecla para cima está pressionada.
 document.addEventListener("keydown", teclaPressionada);
 function teclaPressionada(evento) {
-    if (evento.keyCode == 38) {
+    if (evento.keyCode == 38 && moduloLunar.combustível > 0) {
         moduloLunar.motorLigado = true;
     }
 }
@@ -115,7 +115,6 @@ function atracaoGravitacional() {
             moduloLunar.velocidade.y -= 0.06
             moduloLunar.combustível -= 1;
         } else {
-            moduloLunar.motorLigado = false;
             moduloLunar.combustível = 0;
         }
     }
