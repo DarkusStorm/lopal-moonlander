@@ -39,7 +39,7 @@ function desenharModuloLunar() {
     contexto.fill();
     contexto.closePath();
 
-    if (moduloLunar.motorLigado) {
+    if (moduloLunar.motorLigado && moduloLunar.combustível > 0) {
         desenharChama();
     }
 
@@ -53,7 +53,6 @@ function desenharChama() {
     contexto.lineTo(moduloLunar.largura * 0.5, moduloLunar.altura * 0.5);
     // Determina o tamanho da chama.
     contexto.lineTo(0, moduloLunar.altura * 0.5 + Math.random() * 10);
-    contexto.lineTo(moduloLunar.largura * -0.5, moduloLunar.altura * 0.5);
     contexto.closePath();
     contexto.fillStyle = "orange";
     contexto.fill();
