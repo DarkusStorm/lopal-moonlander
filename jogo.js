@@ -29,6 +29,18 @@ let moduloLunar = {
     rotaçãoHorário: false
 }
 
+let estrelas = [];
+for (let i = 0; i < 500; i++) {
+    estrelas[i] = {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        raio: Math.sqrt(Math.random() * 2),
+        transparência: 1.0,
+        diminuicao: true,
+        razaoDeCintilacao: Math.random() * 0.05
+    }
+}
+
 // Visualização:
 function desenharModuloLunar() {
     contexto.save();
@@ -109,18 +121,29 @@ function acidente() {
     contexto.font = "bold 18px Arial"
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
-    contexto.fillStyle = "lightgray";
+    contexto.fillStyle = "red";
     let acidente = "Houve um acidente! Você teve uma aterrissagem brusca.";
     contexto.fillText(acidente, 400, 160);
 }
 
-function sucesso(){
+function sucesso() {
     contexto.font = "bold 18px Arial"
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
-    contexto.fillStyle = "lightgray";
+    contexto.fillStyle = "green";
     let sucesso = "Você conseguiu pousar! O jogo acabou.";
     contexto.fillText(sucesso, 300, 160);
+}
+
+function desenharEstrelas() {
+    for (let i; i < estrelas.length; i++) {
+        let estrela = estrelas[i];
+        contexto.beginPath();
+        contexto.arc(estrela.x, estrela.y, estrela.raio, 0, 2 * Math.PI);
+        contexto.closePath();
+        contexto.fillStyle = "rgba(255, 255, 255, " + estrelas.transparência + ")";
+        contexto.restore;
+    }
 }
 function desenhar() {
     // Limpa o que há na tela.
@@ -133,6 +156,7 @@ function desenhar() {
     mostrarÂngulo();
     mostrarAltitude();
     mostrarCombustível();
+    desenharEstrelas();
     desenharModuloLunar();
     // "RequestAnimationFrame" repete a execução da função "desenhar" a cada quadro.
     if (moduloLunar.posição.y >= (canvas.height - 0.5 * moduloLunar.altura)) {
@@ -156,12 +180,12 @@ function teclaPressionada(evento) {
     }
     if (evento.keyCode == 39) {
         // Comando para girar no sentido anti-horário;
-        console.log("Seta para esquerda pressionada.");
+        console.log("Seta para direita pressionada.");
         moduloLunar.rotaçãoAntiHorário = true;
     }
     if (evento.keyCode == 37) {
         // Comando para girar no sentido horário;
-        console.log("Seta para direita pressionada.");
+        console.log("Seta para esquerda pressionada.");
         moduloLunar.rotaçãoHorário = true;
     }
 }
@@ -173,12 +197,12 @@ function teclaSolta(evento) {
     }
     if (evento.keyCode == 39) {
         // Comando para parar de girar no sentido anti-horário;
-        console.log("Seta para esquerda solta.");
+        console.log("Seta para direita solta.");
         moduloLunar.rotaçãoAntiHorário = false;
     }
     if (evento.keyCode == 37) {
         // Comando para parar de girar no sentido horário;
-        console.log("Seta para direita solta.");
+        console.log("Seta para esquerda solta.");
         moduloLunar.rotaçãoHorário = false;
     }
 }
