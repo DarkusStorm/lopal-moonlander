@@ -11,11 +11,11 @@ let contexto = canvas.getContext("2d");
 
 
 let moduloLunar = {
-    posicao: {
-        x: 100,
+    posição: {
+        x: Math.random() * 700,
         y: 100
     },
-    angulo: 0,
+    ângulo: -Math.PI / 2,
     largura: 20,
     altura: 20,
     cor: "lightgray",
@@ -24,7 +24,9 @@ let moduloLunar = {
         x: 0,
         y: 0
     },
-    combustível: 1000
+    combustível: 1000,
+    rotaçãoAntiHorário: false,
+    rotaçãoHorário: false
 }
 
 // Visualização:
@@ -32,8 +34,8 @@ function desenharModuloLunar() {
     contexto.save();
     // Salva o contexto atual, visto que será alterado deopis.
     contexto.beginPath();
-    contexto.translate(moduloLunar.posicao.x, moduloLunar.posicao.y);
-    contexto.rotate(moduloLunar.angulo);
+    contexto.translate(moduloLunar.posição.x, moduloLunar.posição.y);
+    contexto.rotate(moduloLunar.ângulo);
     contexto.rect(moduloLunar.largura * -0.5, moduloLunar.altura * -0.5, moduloLunar.largura, moduloLunar.altura);
     contexto.fillStyle = moduloLunar.cor;
     contexto.fill();
@@ -58,13 +60,40 @@ function desenharChama() {
     contexto.fill();
 }
 
-function mostrarVelocidade() {
+function mostrarVelocidadeY() {
     contexto.font = "bold 18px Arial";
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
     contexto.fillStyle = "lightgray";
-    let velocidade = `Velocidade: ${(10 * moduloLunar.velocidade.y).toFixed(1)}`;
-    contexto.fillText(velocidade, 100, 60);
+    let y = `Velocidade Y: ${(10 * moduloLunar.velocidade.y).toFixed(1)}`;
+    contexto.fillText(y, 200, 60);
+}
+
+function mostrarVelocidadeX() {
+    contexto.font = "bold 18px Arial";
+    contexto.textAlign = "center";
+    contexto.textBaseLine = "middle";
+    contexto.fillStyle = "lightgray";
+    let x = `Velocidade X: ${(10 * moduloLunar.velocidade.x).toFixed(1)}`;
+    contexto.fillText(x, 200, 80);
+}
+
+function mostrarÂngulo() {
+    contexto.font = "bold 18px Arial";
+    contexto.textAlign = "center";
+    contexto.textBaseLine = "middle";
+    contexto.fillStyle = "lightgray";
+    let ângulo = `Ângulo: ${((180 / Math.PI) * moduloLunar.ângulo).toFixed(0)}°`;
+    contexto.fillText(ângulo, 500, 60);
+}
+
+function mostrarAltitude() {
+    contexto.font = "bold 18px Arial";
+    contexto.textAlign = "center";
+    contexto.textBaseLine = "middle";
+    contexto.fillStyle = "lightgray";
+    let altitude = `Altitude: ${((moduloLunar.posição.y - canvas.height) * -0.5).toFixed(0)}`;
+    contexto.fillText(altitude, 500, 80);
 }
 
 function mostrarCombustível() {
@@ -72,26 +101,46 @@ function mostrarCombustível() {
     contexto.textAlign = "center";
     contexto.textBaseLine = "middle";
     contexto.fillStyle = "lightgray";
-    let combustível = `Combustível: ${(moduloLunar.combustível).toFixed(1)}`;
-    contexto.fillText(combustível, 100, 80);
+    let combustível = `Combustível: ${(moduloLunar.combustível / 10).toFixed(1)}%`;
+    contexto.fillText(combustível, 200, 100);
 }
 
+function acidente() {
+    contexto.font = "bold 18px Arial"
+    contexto.textAlign = "center";
+    contexto.textBaseLine = "middle";
+    contexto.fillStyle = "lightgray";
+    let acidente = "Houve um acidente! Você teve uma aterrissagem brusca.";
+    contexto.fillText(acidente, 400, 160);
+}
+
+function sucesso(){
+    contexto.font = "bold 18px Arial"
+    contexto.textAlign = "center";
+    contexto.textBaseLine = "middle";
+    contexto.fillStyle = "lightgray";
+    let sucesso = "Você conseguiu pousar! O jogo acabou.";
+    contexto.fillText(sucesso, 300, 160);
+}
 function desenhar() {
     // Limpa o que há na tela.
     contexto.clearRect(0, 0, canvas.width, canvas.height);
 
     // Devem estar nessa ordem.
     atracaoGravitacional();
-    mostrarVelocidade();
+    mostrarVelocidadeY();
+    mostrarVelocidadeX();
+    mostrarÂngulo();
+    mostrarAltitude();
     mostrarCombustível();
     desenharModuloLunar();
     // "RequestAnimationFrame" repete a execução da função "desenhar" a cada quadro.
-    if (moduloLunar.posicao.y >= (canvas.height - 0.5 * moduloLunar.altura)) {
+    if (moduloLunar.posição.y >= (canvas.height - 0.5 * moduloLunar.altura)) {
 
-        if (moduloLunar.velocidade.y >= 1.5) {
-            return alert("Houve um acidente! Você bateu com a lua.");
+        if (moduloLunar.velocidade.y >= 2.0 || 5 < moduloLunar.ângulo) {
+            return acidente();
         } else {
-            return alert("Você conseguiu pousar! O jogo acabou.");
+            return sucesso();
         }
     }
     requestAnimationFrame(desenhar);
@@ -105,6 +154,16 @@ function teclaPressionada(evento) {
     if (evento.keyCode == 38 && moduloLunar.combustível > 0) {
         moduloLunar.motorLigado = true;
     }
+    if (evento.keyCode == 39) {
+        // Comando para girar no sentido anti-horário;
+        console.log("Seta para esquerda pressionada.");
+        moduloLunar.rotaçãoAntiHorário = true;
+    }
+    if (evento.keyCode == 37) {
+        // Comando para girar no sentido horário;
+        console.log("Seta para direita pressionada.");
+        moduloLunar.rotaçãoHorário = true;
+    }
 }
 // O programa compreende como "motorLigado = false" quando a tecla de seta para cima não está pressionada.
 document.addEventListener("keyup", teclaSolta);
@@ -112,15 +171,32 @@ function teclaSolta(evento) {
     if (evento.keyCode == 38) {
         moduloLunar.motorLigado = false;
     }
+    if (evento.keyCode == 39) {
+        // Comando para parar de girar no sentido anti-horário;
+        console.log("Seta para esquerda solta.");
+        moduloLunar.rotaçãoAntiHorário = false;
+    }
+    if (evento.keyCode == 37) {
+        // Comando para parar de girar no sentido horário;
+        console.log("Seta para direita solta.");
+        moduloLunar.rotaçãoHorário = false;
+    }
 }
 let gravidade = 0.03;
 function atracaoGravitacional() {
-    moduloLunar.posicao.x += moduloLunar.velocidade.x;
-    moduloLunar.posicao.y += moduloLunar.velocidade.y;
+    moduloLunar.posição.x += moduloLunar.velocidade.x;
+    moduloLunar.posição.y += moduloLunar.velocidade.y;
+    if (moduloLunar.rotaçãoAntiHorário) {
+        moduloLunar.ângulo += Math.PI / 180;
+    } else if (moduloLunar.rotaçãoHorário) {
+        moduloLunar.ângulo -= Math.PI / 180;
+    }
+
     if (moduloLunar.motorLigado) {
         if (moduloLunar.combustível > 0) {
-            moduloLunar.velocidade.y -= 0.06
-            moduloLunar.combustível -= 1;
+            moduloLunar.velocidade.y -= 0.04 * Math.cos(moduloLunar.ângulo);
+            moduloLunar.velocidade.x += 0.04 * Math.sin(moduloLunar.ângulo);
+            moduloLunar.combustível--;
         } else {
             moduloLunar.combustível = 0;
         }
